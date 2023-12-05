@@ -1,0 +1,168 @@
+<html>
+
+<head>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" href="css/style.css" />
+	<script>
+
+		function formValidation(name, phone, Programme, budget) {
+
+			var phoneNoPattern = /^[07]{2}[0-9]{8}$/
+
+			if (name.trim() === "") {
+				alert("name cannot be empty")
+				return false;
+			}
+
+			if (phone.trim() === "") {
+				alert("phone number annot be empty")
+				return false;
+
+			} else if (!phone.match(phoneNoPattern)) {
+				alert("phone number should be in correct format");
+				return false;
+			}
+
+			if (Programme !== "1" && Programme !== "2") {
+				alert("Select a the Study Programme");
+				return false;
+			}
+			if (budget > 100 || budget < 10 && budget == null) {
+				alert("Value should be between 10 to 100 million LKR");
+				return false;
+			}
+
+			return true;
+		}
+
+		function budgetCalculation(Programme,budget) {
+
+			var AverageBudget = 0;
+
+			if (Programme == "1") {
+				AverageBudget = (budget * 1000000 )/ 40;
+				return AverageBudget;
+			}
+
+			if (Programme == "2") {
+				AverageBudget = (budget * 1000000 ) / 15;
+				return AverageBudget;
+			}
+		}
+
+		function getAmount() {
+
+			var name = document.forms["reportform"]["txtname"].value;
+			var phone = document.forms["reportform"]["txtindexno"].value;
+			var Programme = document.forms["reportform"]["StuPro"].value;
+			var budget = parseInt(document.forms["reportform"]["txtbug"].value);
+
+
+			if (formValidation(name, phone, Programme, budget)) {
+
+				var budgetAllocationPerMonth = budgetCalculation(Programme,budget);
+
+				if(budgetAllocationPerMonth >= 100000){
+
+					document.forms["reportform"]["txtavg"].value = budgetAllocationPerMonth;
+					document.forms["reportform"]["txtrec"].value = "Eligible";
+
+				}
+				else if(budgetAllocationPerMonth >= 50000){
+					document.forms["reportform"]["txtavg"].value = budgetAllocationPerMonth;
+					document.forms["reportform"]["txtrec"].value = "Apply for part time job";
+				}
+				else if(budgetAllocationPerMonth >= 20000){
+					document.forms["reportform"]["txtavg"].value = budgetAllocationPerMonth;
+					document.forms["reportform"]["txtrec"].value = "Not Eligible";
+				}
+
+			}
+
+
+		}
+
+
+	</script>
+</head>
+
+<body>
+	<div class="panel panel-primary">
+		<div class="panel-heading">
+			<h1>WinTec Metro Campus</h1>
+			<h2>Budget Analyzer</h2>
+		</div>
+		<div class="panel-body">
+			<form name="reportform">
+				<div class="row">
+					<div class="col-sm-12">
+						<div class="form-group">
+							<label>Name : </label>
+							<input class="form-control" type="text" name="txtname" />
+						</div>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-sm-12">
+						<div class="form-group">
+							<label>Phone No : </label>
+							<input class="form-control" type="text" name="txtindexno" />
+						</div>
+					</div>
+				</div>
+
+				<h3>Financial Eligibility Calculater</h3>
+
+				<div class="row">
+					<div class="col-sm-6">
+						<div class="form-group">
+							<label>Select the Study Programme : </label><br>
+							<select class="form-control" name="StuPro" id="StuPro">
+								<option>--Select One--</option>
+								<option value="1">Undergraduate</option>
+								<option value="2">Postgraduate</option>
+							</select>
+						</div>
+					</div>
+					<div class="col-sm-6">
+						<div class="form-group">
+							<label>Enter your budget allocated for the Programme (Million LKR) : </label>
+							<input class="form-control" type="number" name="txtbug" />
+						</div>
+					</div>
+
+				</div>
+
+
+				<input type="button" class="btn btn-success" name="btncalc" value="Calculate" onclick="getAmount()" />
+
+				<hr />
+
+				<div class="row">
+					<div class="col-sm-6">
+						<div class="form-group">
+							<label>Average Budget Allocation per Month : </label>
+							<input class="form-control" readonly type="number" name="txtavg" />
+						</div>
+					</div>
+					<div class="col-sm-6">
+						<div class="form-group">
+							<label>Recommendation : </label>
+							<input class="form-control" readonly type="text" name="txtrec" />
+						</div>
+					</div>
+				</div>
+
+
+			</form>
+		</div>
+		<div class="panel-footer">
+			<p>&copy; 2022 - All rights reserved</p>
+		</div>
+	</div>
+</body>
+
+</html>
